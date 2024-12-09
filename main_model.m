@@ -1,0 +1,34 @@
+%% set parameter
+param=set_param();
+
+%% simulation
+N_eqn=10;
+init=repmat(randi(3,N_eqn,1),1,param.Enum+param.Mnum)-1;
+% initial condition: 
+% dim 1: column vector of size[N_eqn, 1], each a integer between 1 and 3
+% dim 2: cell num; replicate dim 1 for cell_num times in the direction of
+% row
+
+% cellular interaction
+% cellulat_interactions.E:interactions received by E
+cellular_interactions.E.M_inh = ['D6'];         
+cellular_interactions.E.M_act = [];   
+cellular_interactions.E.E_inh = []; 
+cellular_interactions.E.E_act = [];         
+
+cellular_interactions.M.M_inh = [];         
+cellular_interactions.M.M_act = [];   
+cellular_interactions.M.E_inh = []; 
+cellular_interactions.M.E_act = [];   
+
+interaction=struct_to_matrix(cellular_interactions);
+
+%% simulation
+record=simulation(init,param,interaction,param.actualTime/param.dt);
+
+%% plot
+
+thres=600;
+plot_simulation(record,param,thres);
+   
+
